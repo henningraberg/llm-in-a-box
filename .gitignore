@@ -1,0 +1,38 @@
+*.py[cod]
+.pytest_cache
+
+# Packages
+*.egg
+*.egg-info
+*.xml
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+__pycache__
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+.venv
+venv
+logs
+migrations/schema.sql
+.flaskenv
+.vscode
+.idea
