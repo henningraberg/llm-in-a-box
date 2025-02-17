@@ -1,4 +1,6 @@
 # LLM in a box (LIAB)
+[![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+
 I needed an offline LLM for a long flight to help me on some projects, so I created this.
 
 ## Installation
