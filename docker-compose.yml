@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"  # Exposing port 11434 on both host and container
+    volumes:
+      - ollama:/root/.ollama  # Mounting volume 'ollama' to /root/.ollama in the container
+    restart: always  # Optionally restart the container automatically on failure or restart
+
+volumes:
+  ollama:  # Define the volume named 'ollama'
