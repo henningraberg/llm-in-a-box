@@ -10,5 +10,18 @@ services:
       - ollama:/root/.ollama  # Mounting volume 'ollama' to /root/.ollama in the container
     restart: always  # Optionally restart the container automatically on failure or restart
 
+  postgres:
+    image: "postgres:latest"
+    container_name: "postgres"
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 volumes:
   ollama:  # Define the volume named 'ollama'
