@@ -4,7 +4,7 @@ from enum import Enum
 class ChatRole(Enum):
     SYSTEM = 'system'
     ASSISTANT = 'assistant'
-    USER = 'USER'
+    USER = 'user'
 
     def is_system(self) -> bool:
         return self == ChatRole.SYSTEM

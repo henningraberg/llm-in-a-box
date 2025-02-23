@@ -4,4 +4,4 @@ requests==2.32.3
 textual==2.0.4
 SQLAlchemy==2.0.38
 psycopg2==2.9.10
-python-dotenv==1.0.1
+ollama-python==0.1.2

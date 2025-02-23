@@ -1,6 +1,10 @@
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
+from sqlalchemy.orm import Query
 from sqlalchemy import Column, Integer, DateTime, func
-from database.db import db_engine as db
+
+from database.db import session
+
+from typing_extensions import Self
 
 
 @as_declarative()
@@ -17,7 +21,31 @@ class BaseModel:
         """Convert model to dictionary."""
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
-    def save(self):
+    def save(self) -> Self:
         """Save model to database."""
-        db.session.add(self)
-        db.session.commit()
+        session.add(self)
+        session.commit()
+        return self
+
+    @classmethod
+    def get_one(cls, **kwargs) -> Self:
+        results = cls.query(**kwargs).all()
+
+        assert len(results) == 1, 'requested one, got multiple or none'
+
+        return results[0]
+
+    @classmethod
+    def get_multiple(cls, **kwargs) -> list[Self]:
+        for key, value in kwargs.items():
+            return session.query(cls).filter(getattr(cls, key) == value).all()
+        return session.query(cls).all()
+
+    @classmethod
+    def query(cls, **kwargs) -> Query:
+        query = session.query(cls)
+        for key, value in kwargs.items():
+            if not hasattr(cls, key):
+                raise ValueError(f'{cls.__name__} does not have attribute {key}')
+            query = query.filter(getattr(cls, key) == value)
+        return query
