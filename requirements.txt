@@ -1,6 +1,5 @@
 openai==1.63.1
 ruff==0.9.6
-requests==2.32.3
 textual==2.0.4
 SQLAlchemy==2.0.38
 psycopg2==2.9.10
