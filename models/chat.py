@@ -15,10 +15,8 @@ class Chat(BaseModel):
         self.name = name
         self.default_model = default_model
 
-    @classmethod
-    def get_chat_history(cls) -> list[ChatMessage]:
-        return ChatMessage.get_multiple(chat_id=cls.id)
+    def get_chat_history(self) -> list[ChatMessage]:
+        return ChatMessage.get_multiple(chat_id=self.id)
 
-    @classmethod
-    def get_chat_history_as_dict(cls) -> list[dict[str, str]]:
-        return [m.to_dict() for m in cls.get_chat_history()]
+    def get_chat_history_as_dict(self) -> list[dict[str, str]]:
+        return [m.to_dict() for m in self.get_chat_history()]
