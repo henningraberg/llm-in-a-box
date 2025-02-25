@@ -1,4 +1,5 @@
 import click
+from textual_app.app import TextualApp
 from models.chat import Chat
 from integrations.ollama_manager import OllamaManager
 from database.clean_db import clean_db
@@ -8,6 +9,12 @@ from database.init_db import init_db
 @click.group()
 def cli():
     pass
+
+
+@click.command()
+def gui():
+    """Run the LIAB GUI application."""
+    TextualApp().run()
 
 
 @click.command()
@@ -108,6 +115,9 @@ def build_db():
     init_db()
     click.echo('✅ Database tables created successfully!')
 
+
+# Add commands to the main CLI group
+cli.add_command(gui)
 
 cli.add_command(add_chat)
 cli.add_command(list_chats)
