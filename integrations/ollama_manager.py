@@ -30,7 +30,7 @@ class OllamaManager:
         return ollama.delete(name=model)
 
     @staticmethod
-    def chat(chat_id: int, content: str, model: Optional[str] = None) -> Generator:
+    def create_message_and_chat(chat_id: int, content: str, model: Optional[str] = None) -> Generator:
         chat = Chat.get_one(id=chat_id)
 
         if model:
@@ -42,6 +42,17 @@ class OllamaManager:
         new_message = ChatMessage(chat_id=chat.id, role=ChatRole.USER, model=chat.default_model, content=content).save()
 
         message_history.append(new_message.to_dict())
+
+        ai_response = ''
+        for chunked_response in ollama.chat(messages=message_history, stream=True, model=chat.default_model):
+            ai_response += chunked_response.message.content
+            yield chunked_response.message.content
+
+        ChatMessage(chat_id=chat.id, role=ChatRole.ASSISTANT, model=chat.default_model, content=ai_response).save()
+
+    @staticmethod
+    def chat(chat: Chat) -> Generator:
+        message_history = chat.get_chat_history_as_dict()
 
         ai_response = ''
         for chunked_response in ollama.chat(messages=message_history, stream=True, model=chat.default_model):

@@ -54,7 +54,7 @@ def chat(ctx, chat_id: int, content: str):
 
     ctx.invoke(list_chat_history, chat_id=chat_id)
 
-    for x in manager.chat(chat_id=chat_id, content=content):
+    for x in manager.create_message_and_chat(chat_id=chat_id, content=content):
         click.echo(x, nl=False)
 
 
