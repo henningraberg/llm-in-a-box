@@ -43,9 +43,6 @@ class OllamaManager:
 
         message_history.append(new_message.to_dict())
 
-        for x in message_history:
-            print(x)
-
         ai_response = ''
         for chunked_response in ollama.chat(messages=message_history, stream=True, model=chat.default_model):
             ai_response += chunked_response.message.content

@@ -34,23 +34,27 @@ def list_chats():
 
 
 @click.command()
-@click.option('--id', type=int, help='ID of chat')
-def list_chat_history():
+@click.option('--chat_id', type=int, help='ID of chat')
+def list_chat_history(chat_id: int):
     """List a chats message history."""
-    chat = Chat.get_one(id=id)
+    chat = Chat.get_one(id=chat_id)
     message_history = chat.get_chat_history()
 
     for message in message_history:
-        click.echo(message)
+        click.echo(message.to_dict())
 
 
 @click.command()
 @click.option('--content', type=str, help='Message to send to the LLM.')
-@click.option('--id', type=int, help='ID of chat.')
-def chat(id: int, content: str):
+@click.option('--chat_id', type=int, help='ID of chat.')
+@click.pass_context
+def chat(ctx, chat_id: int, content: str):
     """List a chats message history."""
     manager = OllamaManager()
-    for x in manager.chat(chat_id=id, content=content):
+
+    ctx.invoke(list_chat_history, chat_id=chat_id)
+
+    for x in manager.chat(chat_id=chat_id, content=content):
         click.echo(x, nl=False)
 
 
@@ -121,6 +125,7 @@ cli.add_command(gui)
 
 cli.add_command(add_chat)
 cli.add_command(list_chats)
+cli.add_command(list_chat_history)
 cli.add_command(chat)
 
 cli.add_command(install_model)
