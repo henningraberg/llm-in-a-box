@@ -1,14 +1,16 @@
 from typing import Optional
 
-from textual.widgets import Label
+from textual.widgets import TextArea
 
 from enums.enums import ChatRole
 from models.chat_message import ChatMessage as ChatMessageModel
 
 
-class ChatMessage(Label):
+class ChatMessage(TextArea):
     DEFAULT_CSS = """
         ChatMessage {
+            border: dashed black;
+            height: auto ;
         }
     """
 
@@ -21,4 +23,4 @@ class ChatMessage(Label):
                 content += f' | MODEL: {chat_message.model}'
             content += f' | TIME: {chat_message.created_at} \n >>> {chat_message.content}'
 
-        super().__init__(content, markup=False, *args, **kwargs)
+        super().__init__(content, read_only=True, *args, **kwargs)

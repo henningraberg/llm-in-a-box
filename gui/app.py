@@ -5,6 +5,7 @@ from textual.app import App
 from enums.enums import ChatRole
 from gui.views.main_view import MainView
 from textual import on, work
+from textual.worker import Worker
 from textual.widgets import Button, Select
 from textual.containers import VerticalScroll
 from textual.binding import Binding
@@ -25,6 +26,7 @@ class TextualApp(App):
     """Main Textual application."""
 
     current_chat_id: Optional[int] = None
+    response_worker: Worker | None = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -65,8 +67,16 @@ class TextualApp(App):
     @on(Button.Pressed)
     def button_pressed(self, event: Button.Pressed) -> None:
         if 'load-chat-button-' in event.button.id:
+            previous_chat_id = self.current_chat_id
             chat_id = int(event.button.id.split('-')[-1])
             self.load_chat(chat_id=chat_id)
+            if self.response_worker and self.response_worker.is_running:
+                self.response_worker.cancel()
+                abort_button = self.query_one('#abort-button')
+                abort_button.disabled = True
+                current_chat = Chat.get_one(id=previous_chat_id)
+                chat_messages = current_chat.get_chat_history()
+                chat_messages[-1].delete()
             return
 
         if 'send-button' == event.button.id:
@@ -75,6 +85,24 @@ class TextualApp(App):
             if content:
                 self.send_message(content=content)
                 text_input.text = ''
+                abort_button = self.query_one('#abort-button')
+                abort_button.disabled = False
+            return
+
+        if 'abort-button' == event.button.id:
+            self.load_chat(chat_id=self.current_chat_id)
+            if self.response_worker and self.response_worker.is_running:
+                self.response_worker.cancel()
+                self.sub_title += self.sub_title + 'canceling ' + str(self.response_worker)
+                send_button = self.query_one('#send-button')
+                abort_button = self.query_one('#abort-button')
+                send_button.disabled = False
+                abort_button.disabled = True
+                current_chat = Chat.get_one(id=self.current_chat_id)
+                chat_messages = current_chat.get_chat_history()
+                chat_messages[-1].delete()
+                self.load_chat(chat_id=current_chat.id)
+            return
 
     def send_message(self, content: str) -> None:
         manager = OllamaManager()
@@ -110,7 +138,7 @@ class TextualApp(App):
         history_container.action_scroll_end()
 
         # Start background task to fetch AI response
-        self.generate_response(
+        self.response_worker = self.generate_response(
             manager=manager,
             content=content,
             chat=chat,
@@ -118,17 +146,24 @@ class TextualApp(App):
         )
 
     @work(thread=True)
-    async def generate_response(
-        self, manager: OllamaManager, content: str, chat: ChatMessageModel, widget: ChatMessage
-    ):
+    async def generate_response(self, manager: OllamaManager, content: str, chat: Chat, widget: ChatMessage):
         """Generate the AI response asynchronously and update widget dynamically."""
+
+        send_button = self.query_one('#send-button')
+        abort_button = self.query_one('#abort-button')
+
+        send_button.disabled = True
+
         widget_content = ''
 
-        for word in manager.chat(content=content, chat_id=chat.id, model=chat.default_model):
+        for word in manager.chat(chat):
             widget_content += word
-            widget.update(widget_content)
+            widget.text = widget_content
             history_container = self.query_one('#chat-history', ChatHistory)
             history_container.action_scroll_end()
+
+        abort_button.disabled = True
+        send_button.disabled = False
 
     def load_chat(self, chat_id: int) -> None:
         self.set_current_chat(chat_id)
