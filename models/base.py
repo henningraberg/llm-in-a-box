@@ -23,9 +23,16 @@ class BaseModel:
 
     def save(self) -> Self:
         """Save model to database."""
-        session.add(self)
+        if self not in session:
+            session.add(self)
+        session.flush()
         session.commit()
         return self
+
+    def delete(self) -> None:
+        session.delete(self)
+        session.flush()
+        session.commit()
 
     @classmethod
     def get_one(cls, **kwargs) -> Self:
