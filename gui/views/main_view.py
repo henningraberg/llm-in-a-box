@@ -11,5 +11,5 @@ class MainView(Screen):
     def compose(self) -> ComposeResult:
         """Create UI elements."""
         yield Header(id='header')
-        yield ChatContainer()
+        yield ChatContainer(id='chat-container')
         yield Footer(id='footer')
