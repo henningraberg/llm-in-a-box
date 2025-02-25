@@ -9,7 +9,9 @@ from gui.widgets.llm_selector import LLMSelector
 class ChatViewContainer(Vertical):
     def compose(self) -> ComposeResult:
         disabled = not bool(self.app.sub_title)
-        yield LLMSelector(id='llm-selection-in-chat', disabled=disabled)
+        with Horizontal(id='chat-view-header'):
+            yield LLMSelector(id='llm-selection-in-chat', disabled=disabled)
+            yield Button(label='Delete chat', id='delete-chat-button', disabled=disabled, variant='error')
         yield ChatHistory(id='chat-history', disabled=disabled)
         with Horizontal(id='input-box'):
             yield TextArea(id='message-input', disabled=disabled, show_line_numbers=True)
