@@ -2,8 +2,8 @@ from textual.app import ComposeResult
 from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, TextArea
 
-from textual_app.widgets.chat_history import ChatHistory
-from textual_app.widgets.llm_selector import LLMSelector
+from gui.widgets.chat_history import ChatHistory
+from gui.widgets.llm_selector import LLMSelector
 
 
 class ChatViewContainer(Vertical):

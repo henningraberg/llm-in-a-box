@@ -1,5 +1,5 @@
 import click
-from textual_app.app import TextualApp
+from gui.app import TextualApp
 from models.chat import Chat
 from integrations.ollama_manager import OllamaManager
 from database.clean_db import clean_db

@@ -1,17 +1,17 @@
 from textual.app import App
-from textual_app.views.main_view import MainView
+from gui.views.main_view import MainView
 from textual import on
 from textual.widgets import Button, Select
 from textual.containers import VerticalScroll
 from textual.binding import Binding
 
-from textual_app.views.new_chat_screen import NewChatScreen
-from textual_app.widgets.chat_history import ChatHistory
-from textual_app.widgets.chat_item import ChatItem
+from gui.views.new_chat_screen import NewChatScreen
+from gui.widgets.chat_history import ChatHistory
+from gui.widgets.chat_item import ChatItem
 
 from models.chat import Chat
-from textual_app.widgets.chat_message import ChatMessage
-from textual_app.widgets.llm_selector import LLMSelector
+from gui.widgets.chat_message import ChatMessage
+from gui.widgets.llm_selector import LLMSelector
 
 
 class TextualApp(App):

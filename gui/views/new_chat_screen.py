@@ -3,7 +3,7 @@ from textual.screen import ModalScreen
 from textual.widgets import Button, Label
 from textual.containers import Horizontal, Vertical, Container
 
-from textual_app.widgets.llm_selector import LLMSelector
+from gui.widgets.llm_selector import LLMSelector
 
 
 class NewChatScreen(ModalScreen):

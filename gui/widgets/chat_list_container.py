@@ -1,8 +1,8 @@
 from textual.containers import Vertical
 from textual.app import ComposeResult
 
-from textual_app.widgets.chat_list import ChatList
-from textual_app.widgets.chat_list_button import ChatListButton
+from gui.widgets.chat_list import ChatList
+from gui.widgets.chat_list_button import ChatListButton
 
 
 class ChatListContainer(Vertical):

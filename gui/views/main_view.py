@@ -2,7 +2,7 @@ from textual.screen import Screen
 from textual.app import ComposeResult
 from textual.widgets import Header, Footer
 
-from textual_app.widgets.chat_container import ChatContainer
+from gui.widgets.chat_container import ChatContainer
 
 
 class MainView(Screen):

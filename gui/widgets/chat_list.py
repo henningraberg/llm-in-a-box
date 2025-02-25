@@ -1,7 +1,7 @@
 from textual.containers import VerticalScroll
 from textual.app import ComposeResult
 
-from textual_app.widgets.chat_item import ChatItem
+from gui.widgets.chat_item import ChatItem
 
 from models.chat import Chat
 
