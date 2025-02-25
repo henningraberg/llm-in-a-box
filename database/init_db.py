@@ -6,7 +6,7 @@ from models.chat_message import ChatMessage
 from models.chat import Chat
 # ruff: noqa
 
-# Create tables
-BaseModel.metadata.create_all(db_engine)
 
-print('✅ Database tables created successfully!')
+def init_db() -> None:
+    # Create tables
+    BaseModel.metadata.create_all(db_engine)

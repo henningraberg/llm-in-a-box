@@ -6,7 +6,7 @@ from models.chat_message import ChatMessage
 from models.chat import Chat
 # ruff: noqa
 
-# Drop all tables
-BaseModel.metadata.drop_all(bind=db_engine)
 
-print('✅ Database tables cleared successfully!')
+def clean_db() -> None:
+    # Drop all tables
+    BaseModel.metadata.drop_all(bind=db_engine)
