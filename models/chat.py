@@ -1,5 +1,6 @@
 from .base import BaseModel
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 
 from models.chat_message import ChatMessage
 
@@ -9,6 +10,8 @@ class Chat(BaseModel):
 
     name = Column(String(), nullable=False)
     default_model = Column(String(), nullable=False)  # Default model set on the chat
+
+    messages = relationship('ChatMessage', back_populates='chat', cascade='all, delete-orphan')
 
     def __init__(self, name: str, default_model: str) -> None:
         super().__init__()
@@ -20,3 +23,9 @@ class Chat(BaseModel):
 
     def get_chat_history_as_dict(self) -> list[dict[str, str]]:
         return [m.to_dict() for m in self.get_chat_history()]
+
+    def get_gui_id(self) -> str:
+        return f'_{self.id}'
+
+    def get_gui_id_with_hash_tag(self) -> str:
+        return f'#{self.get_gui_id()}'

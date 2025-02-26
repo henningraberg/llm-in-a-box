@@ -46,7 +46,7 @@ class BaseModel:
     def get_multiple(cls, **kwargs) -> list[Self]:
         for key, value in kwargs.items():
             return session.query(cls).filter(getattr(cls, key) == value).all()
-        return session.query(cls).all()
+        return session.query(cls).order_by(cls.id).all()
 
     @classmethod
     def query(cls, **kwargs) -> Query:
