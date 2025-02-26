@@ -3,7 +3,7 @@ from textual.screen import ModalScreen
 from textual.widgets import Button, Label
 from textual.containers import Horizontal, Vertical, Container
 
-from gui.widgets.llm_selector import LLMSelector
+from gui.widgets.llm_select import LLMSelect
 
 
 class NewChatScreen(ModalScreen):
@@ -35,7 +35,7 @@ class NewChatScreen(ModalScreen):
         height: auto;
     }
     
-    NewChatScreen > Container > Vertical > LLMSelector {
+    NewChatScreen > Container > Vertical > LLMSelect {
         width: 100%;
         margin-top: 2; 
     }
@@ -49,7 +49,7 @@ class NewChatScreen(ModalScreen):
         with Container():
             yield Label('Pick a model for your new chat')
             with Vertical():
-                yield LLMSelector(id='new-chat-llm-selection')
+                yield LLMSelect(id='llm-selection-1')
                 with Horizontal():
-                    yield Button('Abort', id='abort-chat-creation', variant='error')
-                    yield Button('Create', id='create-chat', variant='success', disabled=True)
+                    yield Button('Abort', id='abort-chat-creation-button', variant='error')
+                    yield Button('Create', id='create-new-chat-button', variant='success', disabled=True)

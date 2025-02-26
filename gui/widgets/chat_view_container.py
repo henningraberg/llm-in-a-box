@@ -3,15 +3,15 @@ from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, TextArea
 
 from gui.widgets.chat_history import ChatHistory
-from gui.widgets.llm_selector import LLMSelector
+from gui.widgets.llm_select import LLMSelect
 
 
 class ChatViewContainer(Vertical):
     def compose(self) -> ComposeResult:
-        disabled = not bool(self.app.sub_title)
+        disabled = not bool(getattr(self.app, 'current_chat_id'))
         with Horizontal(id='chat-view-header'):
-            yield LLMSelector(id='llm-selection-in-chat', disabled=disabled)
-            yield Button(label='Delete chat', id='delete-chat-button', disabled=disabled, variant='error')
+            yield LLMSelect(id='llm-selection-2', disabled=disabled)
+            yield Button(label='Delete chat', id='init-delete-chat-button', disabled=disabled, variant='error')
         yield ChatHistory(id='chat-history', disabled=disabled)
         with Horizontal(id='input-box'):
             yield TextArea(id='message-input', disabled=disabled, show_line_numbers=True)

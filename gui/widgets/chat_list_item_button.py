@@ -1,11 +1,9 @@
 from textual.widgets import Button
 
-from models.chat import Chat
 
-
-class ChatItem(Button):
+class ChatListItemButton(Button):
     DEFAULT_CSS = """
-        ChatItem {
+        ChatListItemButton {
             background: #161312 100%;
             height: 3;
             color: white;
@@ -14,15 +12,13 @@ class ChatItem(Button):
             width: 100%;
         }
         
-        ChatItem:hover {
-            border: ascii;  /* Change border color on hover */
+        ChatListItemButton:hover {
+            border: ascii; 
         }
         
-        ChatItem:focus {
+        ChatListItemButton:focus {
             border: ascii green;
             background: black 100%;
         }
     """
-
-    def __init__(self, chat: Chat, *args, **kwargs):
-        super().__init__(chat.name, id=f'load-chat-button-{chat.id}', *args, **kwargs)
+    pass
