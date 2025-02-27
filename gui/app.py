@@ -126,17 +126,6 @@ class TextualApp(App):
         """Send a message to the chat."""
         chat = Chat.get_one(id=self.current_chat_id)
 
-        if not chat.get_chat_history():
-            max_length = 30
-            if len(content) > max_length:
-                chat_name = content[:max_length] + '...'
-            else:
-                chat_name = content
-            chat.name = chat_name.replace('\n', ' ')
-            chat.save()
-            chat_button = self.query_one(chat.get_gui_id_with_hash_tag(), ChatListItemButton)
-            chat_button.label = chat.name
-
         chat_message = ChatMessage(chat_id=chat.id, content=content, role=ChatRole.USER).save()
 
         history_container = self.query_one('#chat-history-box', VerticalScroll)
@@ -171,6 +160,16 @@ class TextualApp(App):
 
         abort_button.disabled = True
         send_button.disabled = False
+        if chat.name == 'New chat':
+            self.generate_chat_name(chat)
+
+    @work(thread=True)
+    async def generate_chat_name(self, chat: Chat) -> None:
+        ollama_manager = OllamaManager()
+        ollama_manager.generate_chat_name(chat)
+        button = self.query_one(chat.get_gui_id_with_hash_tag(), ChatListItemButton)
+        button.label = chat.name
+        button.refresh()
 
     def load_chat(self, chat_id: int) -> None:
         """Load chat history and set the current chat."""
