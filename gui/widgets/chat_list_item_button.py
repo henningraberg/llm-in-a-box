@@ -7,18 +7,19 @@ class ChatListItemButton(Button):
             background: #161312 100%;
             height: 3;
             color: white;
-            border: round white;
+            border: round green;
             text-align: center;
             width: 100%;
-        }
-        
-        ChatListItemButton:hover {
-            border: ascii; 
-        }
-        
-        ChatListItemButton:focus {
-            border: ascii green;
-            background: black 100%;
+            &:hover {
+                border: ascii; 
+                background: #161312 100%;
+            }
+            &:focus {
+                border: ascii green;
+                background: #161312 100%;
+                text-style: bold;
+                background-tint: $foreground 0%;
+            }
         }
     """
     pass

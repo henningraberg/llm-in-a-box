@@ -177,7 +177,6 @@ class TextualApp(App):
 
     def load_chat(self, chat_id: int) -> None:
         """Load chat history and set the current chat."""
-        self.toggle_chat_list(disabled=True)
         self.set_current_chat(chat_id)
 
         history_container = self.query_one('#chat-history-box', VerticalScroll)
@@ -198,7 +197,6 @@ class TextualApp(App):
             history_container.mount(ChatMessageArea(message))
 
         self.toggle_chat_view(disabled=False)
-        self.toggle_chat_list(disabled=False)
 
     def toggle_chat_view(self, disabled: bool) -> None:
         """Toggle the chat view."""
@@ -220,15 +218,16 @@ class TextualApp(App):
         delete_button = self.query_one('#init-delete-chat-button')
         delete_button.disabled = disabled
 
-    def toggle_chat_list(self, disabled: bool) -> None:
-        """Toggle the chat list."""
-        chat_list = self.query_one('#chat-list')
-        for child in chat_list.children:
-            child.disabled = disabled
-
     def set_current_chat(self, chat_id: Union[int | None]) -> None:
         """Set the current chat."""
+        previous_chat_id = self.current_chat_id
+        if previous_chat_id:
+            button = self.query_one(f'#_{previous_chat_id}', ChatListItemButton)
+            button.styles.reset()
+            button.refresh()
         self.current_chat_id = chat_id
+        button = self.query_one(f'#_{self.current_chat_id}', ChatListItemButton)
+        button.styles.border = ('ascii', 'green')
         self.sub_title = f'chat_id = {self.current_chat_id}'
 
     @on(LLMSelect.Changed, '#llm-selection-1')
