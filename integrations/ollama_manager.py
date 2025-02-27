@@ -67,7 +67,8 @@ class OllamaManager:
                 chat_id=chat.id,
                 role=ChatRole.USER,
                 model=chat.default_model,
-                content='With 30 letters or less, give this chat history a name. Give only the name as a result.',
+                content='With 30 letters or less, give this chat history a name. Give only the name as a result.'
+                'Don\'t include any ",',
             ).to_dict()
         )
         return ollama.chat(messages=message_history, model=chat.default_model).message.content
