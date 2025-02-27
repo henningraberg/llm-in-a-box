@@ -44,9 +44,7 @@ class BaseModel:
 
     @classmethod
     def get_multiple(cls, **kwargs) -> list[Self]:
-        for key, value in kwargs.items():
-            return session.query(cls).filter(getattr(cls, key) == value).all()
-        return session.query(cls).order_by(cls.id).all()
+        return cls.query(**kwargs).order_by(cls.created_at).all()
 
     @classmethod
     def query(cls, **kwargs) -> Query:
@@ -55,4 +53,4 @@ class BaseModel:
             if not hasattr(cls, key):
                 raise ValueError(f'{cls.__name__} does not have attribute {key}')
             query = query.filter(getattr(cls, key) == value)
-        return query
+        return query.order_by(cls.created_at)
