@@ -60,16 +60,14 @@ class OllamaManager:
             yield chunked_response.message.content
 
     @staticmethod
-    def generate_chat_name(chat: Chat) -> None:
+    def generate_chat_name(chat: Chat) -> str:
         message_history = chat.get_chat_history_as_dict()
         message_history.append(
             ChatMessage(
                 chat_id=chat.id,
                 role=ChatRole.USER,
                 model=chat.default_model,
-                content='Given the chat history, name this chat. Explain it in less then 31 characters. Dont do quotes.',
+                content='With 30 letters or less, give this chat history a name. Give only the name as a result.',
             ).to_dict()
         )
-        response = ollama.chat(messages=message_history, model=chat.default_model)
-        chat.name = response.message.content
-        chat.save()
+        return ollama.chat(messages=message_history, model=chat.default_model).message.content

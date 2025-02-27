@@ -166,9 +166,13 @@ class TextualApp(App):
     @work(thread=True)
     async def generate_chat_name(self, chat: Chat) -> None:
         ollama_manager = OllamaManager()
-        ollama_manager.generate_chat_name(chat)
+
+        chat.name = ollama_manager.generate_chat_name(chat)
+        chat.save()
+
         button = self.query_one(chat.get_gui_id_with_hash_tag(), ChatListItemButton)
         button.label = chat.name
+
         button.refresh()
 
     def load_chat(self, chat_id: int) -> None:
