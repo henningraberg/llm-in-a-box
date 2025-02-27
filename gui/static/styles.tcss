@@ -19,12 +19,13 @@
 }
 
 #chat-list{
-    width: 100%;
-    scrollbar-background: #343a40 100%;
-    scrollbar-color: green;
-    scrollbar-background-hover: #343a40 100%;
-    scrollbar-color-active: green;
-    scrollbar-color-hover: green;
+    scrollbar-background: #161312;
+    scrollbar-color: #242424;
+    scrollbar-background-hover: #161312;
+    scrollbar-color-active: #242424;
+    scrollbar-color-hover: #242424;
+    border: heavy black;
+    margin-bottom: 1;
 }
 
 #chat-view-container {
@@ -38,10 +39,14 @@
 }
 
 #chat-history-box{
-    scrollbar-background: black;
     height: 90%;
     overflow-y: scroll;
     border: heavy black;
+    scrollbar-background: #161312;
+    scrollbar-color: #242424;
+    scrollbar-background-hover: #161312;
+    scrollbar-color-active: #242424;
+    scrollbar-color-hover: #242424;
 }
 
 #input-box {

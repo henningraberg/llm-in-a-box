@@ -42,7 +42,7 @@ class TextualApp(App):
         self.push_screen(MainView())
 
     @on(Button.Pressed, '#init-new-chat-button')
-    def create_new_model(self) -> None:
+    def init_create_new_chat(self) -> None:
         self.push_screen(NewChatScreen())
 
     @on(Button.Pressed, '#abort-chat-creation-button')
