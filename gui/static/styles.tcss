@@ -37,13 +37,9 @@
     margin-left: 1;
 }
 
-#chat-view-header{
-}
-
-#chat-history{
+#chat-history-box{
     scrollbar-background: black;
     height: 90%;
-    margin-bottom: 1;
     overflow-y: scroll;
     border: heavy black;
 }
@@ -56,13 +52,5 @@
     margin-right: 1;
 }
 #input-buttons-box{
-   height: 100%;
-}
-
-#send-button {
-    height: 50%;
-}
-
-#abort-button {
-    height: 50%;
+    align-vertical: middle;
 }

@@ -10,17 +10,15 @@ from textual.worker import Worker
 from textual.widgets import Button, Select
 from textual.containers import VerticalScroll
 from textual.binding import Binding
-from textual.reactive import Reactive
 
 from gui.views.new_chat_screen import NewChatScreen
-from gui.widgets.chat_history import ChatHistory
 from gui.widgets.chat_list_item_button import ChatListItemButton
+from gui.widgets.chat_message_area import ChatMessageArea
 from gui.widgets.llm_select import LLMSelect
 from integrations.ollama_manager import OllamaManager
 
 from models.chat import Chat
 from models.chat_message import ChatMessage
-from gui.widgets.chat_message_text_area import ChatMessageTextArea
 
 
 class TextualApp(App):
@@ -91,7 +89,8 @@ class TextualApp(App):
 
     @on(ChatListItemButton.Pressed)
     def init_chat(self, event: ChatListItemButton.Pressed) -> None:
-        if type(event.button) is not ChatListItemButton:
+        # todo: for some reason Button instances triggers this method. Fix this.
+        if not isinstance(event.button, ChatListItemButton):
             return
 
         self.abort_request_if_needed()
@@ -124,6 +123,7 @@ class TextualApp(App):
             abort_button.disabled = False
 
     def send_message(self, content: str) -> None:
+        """Send a message to the chat."""
         chat = Chat.get_one(id=self.current_chat_id)
 
         if not chat.get_chat_history():
@@ -137,46 +137,48 @@ class TextualApp(App):
             chat_button = self.query_one(chat.get_gui_id_with_hash_tag(), ChatListItemButton)
             chat_button.label = chat.name
 
-        chat_message = ChatMessage(
-            chat_id=chat.id, content=content, model=chat.default_model, role=ChatRole.USER
-        ).save()
+        chat_message = ChatMessage(chat_id=chat.id, content=content, role=ChatRole.USER).save()
 
-        history_container = self.query_one('#chat-history', ChatHistory)
+        history_container = self.query_one('#chat-history-box', VerticalScroll)
 
-        history_container.mount(ChatMessageTextArea(chat_message.content))
+        history_container.mount(ChatMessageArea(chat_message))
 
-        ai_response_widget = ChatMessageTextArea()
-        ai_response_widget.loading = True
+        dummy_chat_message = ChatMessage(chat_id=chat.id, role=ChatRole.ASSISTANT, content='', model=chat.default_model)
+        ai_response = ChatMessageArea(dummy_chat_message)
 
-        history_container.mount(ai_response_widget)
+        ai_response_text_area = ai_response.text_area
+        ai_response_text_area.loading = True
+
+        history_container.mount(ai_response)
 
         history_container.action_scroll_end()
 
-        self.response_worker = self.generate_response(chat=chat, ai_response_widget=ai_response_widget)
+        self.response_worker = self.generate_response(chat=chat, ai_response_text_area=ai_response_text_area)
 
     @work(thread=True)
-    async def generate_response(self, chat: Chat, ai_response_widget: ChatMessage) -> None:
+    async def generate_response(self, chat: Chat, ai_response_text_area: ChatMessage) -> None:
         """Generate the AI response asynchronously and update widget dynamically."""
 
         send_button = self.query_one('#send-button')
         abort_button = self.query_one('#abort-button')
+        history_container = self.query_one('#chat-history-box', VerticalScroll)
         send_button.disabled = True
 
         for word in OllamaManager().chat(chat):
-            ai_response_widget.loading = False
-            ai_response_widget.text += word
-            history_container = self.query_one('#chat-history', ChatHistory)
+            ai_response_text_area.loading = False
+            ai_response_text_area.text += word
             history_container.action_scroll_end()
 
         abort_button.disabled = True
         send_button.disabled = False
 
     def load_chat(self, chat_id: int) -> None:
+        """Load chat history and set the current chat."""
+        self.toggle_chat_list(disabled=True)
         self.set_current_chat(chat_id)
 
-        history_container = self.query_one('#chat-history', ChatHistory)
+        history_container = self.query_one('#chat-history-box', VerticalScroll)
 
-        # clear out old messages
         for child in list(history_container.children):
             child.remove()
 
@@ -185,21 +187,25 @@ class TextualApp(App):
         llm_selector = self.query_one('#llm-selection-2', LLMSelect)
         llm_selector.value = chat.default_model
 
-        self.sub_title = f'chat_id={chat.id}'
+        self.set_current_chat(chat_id=chat.id)
+
         chat_history = chat.get_chat_history()
 
         for message in chat_history:
-            history_container.mount(ChatMessageTextArea(message.content))
+            history_container.mount(ChatMessageArea(message))
 
         self.toggle_chat_view(disabled=False)
+        self.toggle_chat_list(disabled=False)
 
     def toggle_chat_view(self, disabled: bool) -> None:
+        """Toggle the chat view."""
         llm_selector = self.query_one('#llm-selection-2')
         llm_selector.disabled = disabled
 
-        chat_history = self.query_one('#chat-history')
+        chat_history = self.query_one('#chat-history-box', VerticalScroll)
         chat_history.disabled = disabled
-        chat_history.action_scroll_end()
+        if chat_history.children:
+            chat_history.action_scroll_end()
 
         message_input = self.query_one('#message-input')
         message_input.disabled = disabled
@@ -211,12 +217,20 @@ class TextualApp(App):
         delete_button = self.query_one('#init-delete-chat-button')
         delete_button.disabled = disabled
 
+    def toggle_chat_list(self, disabled: bool) -> None:
+        """Toggle the chat list."""
+        chat_list = self.query_one('#chat-list')
+        for child in chat_list.children:
+            child.disabled = disabled
+
     def set_current_chat(self, chat_id: Union[int | None]) -> None:
+        """Set the current chat."""
         self.current_chat_id = chat_id
-        self.sub_title = Reactive(f'chat_id = {self.current_chat_id}')
+        self.sub_title = f'chat_id = {self.current_chat_id}'
 
     @on(LLMSelect.Changed, '#llm-selection-1')
     def select_model_for_new_chat(self, event: LLMSelect.Changed) -> None:
+        """Select the model for a new chat."""
         if event.value != Select.BLANK:
             button = self.query_one('#create-new-chat-button', Button)
             button.disabled = False
@@ -226,6 +240,7 @@ class TextualApp(App):
 
     @on(LLMSelect.Changed, '#llm-selection-2')
     def select_model_for_existing_chat(self, event: LLMSelect.Changed) -> None:
+        """Select the model for an existing chat."""
         if event.value != Select.BLANK:
             chat = Chat.get_one(id=self.current_chat_id)
             chat.default_model = event.value

@@ -4,8 +4,9 @@ from textual.widgets import TextArea
 class ChatMessageTextArea(TextArea):
     DEFAULT_CSS = """
         ChatMessageTextArea {
-            border: dashed black;
             height: auto;
+            border: ascii green;
+            width: 100%;
         }
     """
 
