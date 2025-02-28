@@ -6,7 +6,7 @@ import pyperclip
 
 class TextAreaWithBinding(TextArea):
     BINDINGS = [
-        Binding('ctrl+c', action='copy_selection', description='Copy selection'),
+        Binding('ctrl+c', action='copy_selection', description='Copy selected text'),
         Binding('ctrl+a', action='select_all', description='Select all text'),
         Binding('ctrl+q', description='Exit application', action='quit'),
     ]
