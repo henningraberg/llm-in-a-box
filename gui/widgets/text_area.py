@@ -4,7 +4,7 @@ from textual.binding import Binding
 import pyperclip
 
 
-class TextAreaWithBinding(TextArea):
+class TextAreaWithBase(TextArea):
     BINDINGS = [
         Binding('ctrl+c', action='copy_selection', description='Copy selected text'),
         Binding('ctrl+a', action='select_all', description='Select all text'),
@@ -31,7 +31,7 @@ class TextAreaWithBinding(TextArea):
         self.select_all()
 
 
-class ChatMessageTextArea(TextAreaWithBinding):
+class ChatMessageTextArea(TextAreaWithBase):
     DEFAULT_CSS = """
         ChatMessageTextArea {
             height: auto;
@@ -44,5 +44,5 @@ class ChatMessageTextArea(TextAreaWithBinding):
         super().__init__(read_only=True, *args, **kwargs)
 
 
-class InputTextArea(TextAreaWithBinding):
+class InputTextArea(TextAreaWithBase):
     pass

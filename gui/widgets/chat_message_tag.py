@@ -18,7 +18,6 @@ class ChatMessageTagContainer(Container):
 
     def compose(self) -> ComposeResult:
         if self.chat_message.model:
-            self.refresh()
             yield AiChatMessageTag(self.chat_message.model)
         else:
             self.styles.align_horizontal = 'right'

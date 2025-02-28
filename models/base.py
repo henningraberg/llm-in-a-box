@@ -25,20 +25,20 @@ class BaseModel:
         """Save model to database."""
         if self not in session:
             session.add(self)
-        session.flush()
         session.commit()
         return self
 
     def delete(self) -> None:
         session.delete(self)
-        session.flush()
         session.commit()
 
     @classmethod
     def get_one(cls, **kwargs) -> Self:
         results = cls.query(**kwargs).all()
 
-        assert len(results) == 1, 'requested one, got multiple or none'
+        assert not len(results) > 1, 'requested one, got multiple'
+
+        assert not len(results) < 1, 'requested one, got none'
 
         return results[0]
 

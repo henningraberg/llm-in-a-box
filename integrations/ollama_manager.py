@@ -18,19 +18,19 @@ class OllamaManager:
 
     @staticmethod
     def get_model_information(model: str) -> ollama.ShowResponse:
-        return ollama.show(name=model)
+        return ollama.show(model=model)
 
     @staticmethod
     def install_model(model: Optional[str] = None) -> Generator:
-        for x in ollama.pull(name=model, stream=True):
+        for x in ollama.pull(model=model, stream=True):
             yield x
 
     @staticmethod
     def delete_model(model: str) -> ollama.StatusResponse:
-        return ollama.delete(name=model)
+        return ollama.delete(model=model)
 
     @staticmethod
-    def create_message_and_chat(chat_id: int, content: str, model: Optional[str] = None) -> Generator:
+    def chat(chat_id: int, content: str, model: Optional[str] = None) -> Generator:
         chat = Chat.get_one(id=chat_id)
 
         if model:
@@ -51,7 +51,7 @@ class OllamaManager:
         ChatMessage(chat_id=chat.id, role=ChatRole.ASSISTANT, model=chat.default_model, content=ai_response).save()
 
     @staticmethod
-    def chat(chat: Chat) -> Generator:
+    def chat_gui(chat: Chat) -> Generator:
         message_history = chat.get_chat_history_as_dict()
         ai_response = ChatMessage(chat_id=chat.id, role=ChatRole.ASSISTANT, model=chat.default_model, content='')
         for chunked_response in ollama.chat(messages=message_history, stream=True, model=chat.default_model):

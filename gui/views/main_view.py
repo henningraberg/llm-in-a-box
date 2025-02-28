@@ -9,10 +9,7 @@ from gui.widgets.text_area import InputTextArea
 
 
 class MainView(Screen):
-    """Main view of the Textual app with a sidebar menu."""
-
     def compose(self) -> ComposeResult:
-        """Create UI elements."""
         yield Header(id='header')
         with Horizontal(id='chat-container'):
             with Vertical(id='chat-list-container'):

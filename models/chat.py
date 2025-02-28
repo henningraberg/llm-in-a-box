@@ -1,3 +1,5 @@
+from typing import Optional
+
 from .base import BaseModel
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
@@ -9,11 +11,11 @@ class Chat(BaseModel):
     __tablename__ = 'chat'
 
     name = Column(String(), nullable=False)
-    default_model = Column(String(), nullable=False)  # Default model set on the chat
+    default_model = Column(String(), nullable=False)
 
     messages = relationship('ChatMessage', back_populates='chat', cascade='all, delete-orphan')
 
-    def __init__(self, name: str, default_model: str) -> None:
+    def __init__(self, name: str, default_model: Optional[str] = None) -> None:
         super().__init__()
         self.name = name
         self.default_model = default_model

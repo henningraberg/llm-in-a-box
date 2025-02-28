@@ -20,6 +20,8 @@ from integrations.ollama_manager import OllamaManager
 from models.chat import Chat
 from models.chat_message import ChatMessage
 
+from database.db import session
+
 
 class TextualApp(App):
     """Main Textual application."""
@@ -103,18 +105,25 @@ class TextualApp(App):
         self.abort_request_if_needed()
         self.load_chat(chat_id=self.current_chat_id)
 
-    def abort_request_if_needed(self) -> None:
-        if self.response_worker and self.response_worker.is_running:
-            self.response_worker.cancel()
+    @on(LLMSelect.Changed, '#llm-selection-1')
+    def select_model_for_new_chat(self, event: LLMSelect.Changed) -> None:
+        if event.value != Select.BLANK:
+            button = self.query_one('#create-new-chat-button', Button)
+            button.disabled = False
+        else:
+            button = self.query_one('#create-new-chat-button', Button)
+            button.disabled = True
 
-            abort_button = self.query_one('#abort-button')
-            abort_button.disabled = True
-
-            send_button = self.query_one('#send-button')
-            send_button.disabled = False
+    @on(LLMSelect.Changed, '#llm-selection-2')
+    def select_model_for_existing_chat(self, event: LLMSelect.Changed) -> None:
+        if event.value != Select.BLANK:
+            chat = Chat.get_one(id=self.current_chat_id)
+            chat.default_model = event.value
+            chat.save()
 
     @on(Button.Pressed, '#send-button')
     def inti_send_message(self) -> None:
+        """Initiate sending a message to the chat."""
         text_input = self.query_one('#message-input')
         content = text_input.text
         if content:
@@ -123,8 +132,20 @@ class TextualApp(App):
             abort_button = self.query_one('#abort-button')
             abort_button.disabled = False
 
+    def abort_request_if_needed(self) -> None:
+        if self.response_worker and self.response_worker.is_running:
+            self.response_worker.cancel()
+
+            session.rollback()
+
+            abort_button = self.query_one('#abort-button')
+            abort_button.disabled = True
+
+            send_button = self.query_one('#send-button')
+            send_button.disabled = False
+
     def send_message(self, content: str) -> None:
-        """Send a message to the chat."""
+        """Send a message to Ollama and handles the response."""
         chat = Chat.get_one(id=self.current_chat_id)
 
         chat_message = ChatMessage(chat_id=chat.id, content=content, role=ChatRole.USER).save()
@@ -148,13 +169,12 @@ class TextualApp(App):
     @work(thread=True)
     async def generate_response(self, chat: Chat, ai_response_text_area: ChatMessage) -> None:
         """Generate the AI response asynchronously and update widget dynamically."""
-
         send_button = self.query_one('#send-button')
         abort_button = self.query_one('#abort-button')
         history_container = self.query_one('#chat-history-box', VerticalScroll)
         send_button.disabled = True
 
-        for word in OllamaManager().chat(chat):
+        for word in OllamaManager().chat_gui(chat):
             ai_response_text_area.loading = False
             ai_response_text_area.text += word
             history_container.action_scroll_end()
@@ -166,15 +186,19 @@ class TextualApp(App):
 
     @work(thread=True)
     async def generate_chat_name(self, chat: Chat) -> None:
-        ollama_manager = OllamaManager()
+        """Thread to generate chat name async."""
+        try:
+            ollama_manager = OllamaManager()
 
-        chat.name = ollama_manager.generate_chat_name(chat)
-        chat.save()
+            chat.name = ollama_manager.generate_chat_name(chat)
+            chat.save()
 
-        button = self.query_one(chat.get_gui_id_with_hash_tag(), ChatListItemButton)
-        button.label = chat.name
+            button = self.query_one(chat.get_gui_id_with_hash_tag(), ChatListItemButton)
+            button.label = chat.name
 
-        button.refresh()
+            button.refresh()
+        except Exception:
+            pass
 
     def load_chat(self, chat_id: int) -> None:
         """Load chat history and set the current chat."""
@@ -200,7 +224,7 @@ class TextualApp(App):
         self.toggle_chat_view(disabled=False)
 
     def toggle_chat_view(self, disabled: bool) -> None:
-        """Toggle the chat view."""
+        """Toggle the disable attribute on chat view."""
         llm_selector = self.query_one('#llm-selection-2')
         llm_selector.disabled = disabled
 
@@ -230,21 +254,3 @@ class TextualApp(App):
         button = self.query_one(f'#_{self.current_chat_id}', ChatListItemButton)
         button.styles.border = ('ascii', 'green')
         self.sub_title = f'chat_id = {self.current_chat_id}'
-
-    @on(LLMSelect.Changed, '#llm-selection-1')
-    def select_model_for_new_chat(self, event: LLMSelect.Changed) -> None:
-        """Select the model for a new chat."""
-        if event.value != Select.BLANK:
-            button = self.query_one('#create-new-chat-button', Button)
-            button.disabled = False
-        else:
-            button = self.query_one('#create-new-chat-button', Button)
-            button.disabled = True
-
-    @on(LLMSelect.Changed, '#llm-selection-2')
-    def select_model_for_existing_chat(self, event: LLMSelect.Changed) -> None:
-        """Select the model for an existing chat."""
-        if event.value != Select.BLANK:
-            chat = Chat.get_one(id=self.current_chat_id)
-            chat.default_model = event.value
-            chat.save()

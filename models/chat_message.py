@@ -10,7 +10,7 @@ from .base import BaseModel
 class ChatMessage(BaseModel):
     __tablename__ = 'chat_message'
 
-    chat_id = Column(Integer, ForeignKey('chat.id', ondelete='CASCADE'), nullable=False)  # ForeignKey to link Chat
+    chat_id = Column(Integer, ForeignKey('chat.id', ondelete='CASCADE'), nullable=False)
 
     content = Column(String(), nullable=False)
     model = Column(String(), nullable=True)
