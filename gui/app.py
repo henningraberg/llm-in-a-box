@@ -20,8 +20,6 @@ from integrations.ollama_manager import OllamaManager
 from models.chat import Chat
 from models.chat_message import ChatMessage
 
-from database.db import session
-
 
 class TextualApp(App):
     """Main Textual application."""
@@ -82,6 +80,8 @@ class TextualApp(App):
 
         self.app.pop_screen()
 
+        self.abort_request_if_needed()
+
         chat_list = self.query_one('#chat-list', VerticalScroll)
 
         chat_list.mount(
@@ -135,9 +135,6 @@ class TextualApp(App):
     def abort_request_if_needed(self) -> None:
         if self.response_worker and self.response_worker.is_running:
             self.response_worker.cancel()
-
-            session.rollback()
-
             abort_button = self.query_one('#abort-button')
             abort_button.disabled = True
 
