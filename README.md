@@ -6,7 +6,7 @@
 [![Python 3.12](https://img.shields.io/badge/python-3.12-gree.svg)](https://www.python.org/downloads/release/python-3120/)
 [![Python 3.13](https://img.shields.io/badge/python-3.13-gree.svg)](https://www.python.org/downloads/release/python-3130/)
 
-A terminal project exploring the possibilities of managing and running LLMs locally on your machine. Built on  [Ollama](https://ollama.com/), [Docker](https://www.docker.com/), [Postgres](https://www.postgresql.org/), [SQLAlchemy](https://www.sqlalchemy.org/) and [Textual](https://textual.textualize.io/).
+A fully functional Large Language Model (LLM) chat application for the terminal. Run and manage LLMs locally on your machine with ease. Built with [Ollama](https://ollama.com/) for model hosting, [Docker](https://www.docker.com/) for containerization, [Postgres](https://www.postgresql.org/) for data storage, [SQLAlchemy](https://www.sqlalchemy.org/) for database management, and [Textual](https://textual.textualize.io/) for a rich terminal UI.
 
 <p align="center">
   <img src="https://s4.ezgif.com/tmp/ezgif-458da3d881d86f.gif" alt="Alt Text", width="800">
@@ -31,7 +31,7 @@ make install
 
 4. Download the models you want to use (brows available models here &#8594; https://ollama.com/library)
 ```bash
-python liab.py install <model_name>
+python liab.py download-model <model_name>
 ```
 
 5. Run GUI application
