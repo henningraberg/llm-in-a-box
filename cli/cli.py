@@ -94,7 +94,7 @@ def chat(ctx, chat_id: int, content: str, model: Optional[str] = None):
 
         for x in manager.chat(chat_id=chat_id, content=content, model=model):
             click.echo(x, nl=False)
-
+        click.echo('\n\n')
     except Exception as e:
         click.echo(f'❌ {e}')
 
