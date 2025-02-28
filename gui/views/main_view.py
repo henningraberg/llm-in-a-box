@@ -1,10 +1,11 @@
 from textual.screen import Screen
 from textual.app import ComposeResult
-from textual.widgets import Header, Footer, Button, TextArea
+from textual.widgets import Header, Footer, Button
 from textual.containers import Horizontal, Vertical, VerticalScroll
 
 from gui.widgets.chat_list import ChatList
 from gui.widgets.llm_select import LLMSelect
+from gui.widgets.text_area import InputTextArea
 
 
 class MainView(Screen):
@@ -24,7 +25,7 @@ class MainView(Screen):
                     yield Button(label='Delete chat', id='init-delete-chat-button', disabled=disabled, variant='error')
                 yield VerticalScroll(id='chat-history-box', disabled=disabled)
                 with Horizontal(id='input-box'):
-                    yield TextArea(id='message-input', disabled=disabled, show_line_numbers=True)
+                    yield InputTextArea(id='message-input', disabled=disabled, show_line_numbers=True)
                     with Vertical(id='input-buttons-box'):
                         yield Button(label='Send', variant='success', id='send-button', disabled=disabled)
                         yield Button(label='Abort', variant='error', id='abort-button', disabled=disabled)

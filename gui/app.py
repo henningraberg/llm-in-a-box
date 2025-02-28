@@ -32,14 +32,15 @@ class TextualApp(App):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    BINDINGS = [
-        Binding('q', 'quit', 'Quit', key_display='ctrl+q'),
-    ]
+    BINDINGS = [Binding('ctrl+q', description='Exit application', action='quit')]
+
     CSS_PATH = 'static/styles.tcss'
 
     def on_mount(self) -> None:
         self.title = 'LLM IN A BOX'
         self.push_screen(MainView())
+        ascii_art = '+----+\n| 🤖 |\n+----+'
+        self.notify(ascii_art, title=f'Welcome to {self.title}!')
 
     @on(Button.Pressed, '#init-new-chat-button')
     def init_create_new_chat(self) -> None:

@@ -3,7 +3,7 @@ from typing import Optional
 from textual.app import ComposeResult
 
 from gui.widgets.chat_message_tag import ChatMessageTagContainer
-from gui.widgets.chat_message_text_area import ChatMessageTextArea
+from gui.widgets.text_area import ChatMessageTextArea
 from models.chat_message import ChatMessage
 from textual.containers import Vertical
 
