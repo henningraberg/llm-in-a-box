@@ -9,7 +9,7 @@
 A terminal project exploring the possibilities of managing and running LLMs locally on your machine. Built on  [Ollama](https://ollama.com/), [Docker](https://www.docker.com/), [Postgres](https://www.postgresql.org/), [SQLAlchemy](https://www.sqlalchemy.org/) and [Textual](https://textual.textualize.io/).
 
 <p align="center">
-  <img src="https://s3.ezgif.com/tmp/ezgif-3b64aa4ed8e185.gif" alt="Alt Text", width="700">
+  <img src="https://s4.ezgif.com/tmp/ezgif-458da3d881d86f.gif" alt="Alt Text", width="800">
 </p>
 
 
