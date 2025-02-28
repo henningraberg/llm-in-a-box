@@ -27,7 +27,7 @@ class TextualApp(App):
     """Main Textual application."""
 
     current_chat_id: Optional[int] = None
-    response_worker: Worker | None = None
+    response_worker: Optional[Worker] = None
 
     object_ids = {}
 
@@ -243,7 +243,7 @@ class TextualApp(App):
         delete_button = self.query_one('#init-delete-chat-button')
         delete_button.disabled = disabled
 
-    def set_current_chat(self, chat_id: Union[int | None]) -> None:
+    def set_current_chat(self, chat_id: Union[int, None]) -> None:
         """Set the current chat."""
         previous_chat_id = self.current_chat_id
         if previous_chat_id:
