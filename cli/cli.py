@@ -73,15 +73,26 @@ def list_chat_history(chat_id: int):
 @click.command()
 @click.option('--content', type=str, help='Message to send to the LLM.')
 @click.option('--chat_id', type=int, help='ID of chat.')
+@click.option('--model', type=str, help='Name of model that will answer.')
 @click.pass_context
-def chat(ctx, chat_id: int, content: str):
+def chat(ctx, chat_id: int, content: str, model: Optional[str] = None):
     """List a chats message history."""
     try:
         manager = OllamaManager()
 
         ctx.invoke(list_chat_history, chat_id=chat_id)
 
-        for x in manager.chat(chat_id=chat_id, content=content):
+        chat = Chat.get_one(id=chat_id)
+
+        click.echo('You\n---')
+        click.echo(content + '\n\n')
+
+        if not model:
+            click.echo(chat.default_model + '\n' + '-' * len(chat.default_model))
+        else:
+            click.echo(model + '\n' + '-' * len(model))
+
+        for x in manager.chat(chat_id=chat_id, content=content, model=model):
             click.echo(x, nl=False)
 
     except Exception as e:
