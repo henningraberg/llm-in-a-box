@@ -92,16 +92,16 @@ def chat(ctx, chat_id: int, content: str):
 @click.option(
     '--model',
     type=str,
-    help='Name of the model you want to install (see options at https://ollama.com/library). If you abort the progress will be saved.',
+    help='Name of the model you want to download (see options at https://ollama.com/library). If you abort the progress will be saved.',
 )
-def install_model(model: str):
-    """Install model."""
+def download_model(model: str):
+    """Download LLM model."""
     manager = OllamaManager()
 
     current_progress = 0
     try:
-        with click.progressbar(length=1000, label=f'Installing model {model}...') as bar:
-            for progress in manager.install_model(model=model):
+        with click.progressbar(length=1000, label=f'Downloading model {model}...') as bar:
+            for progress in manager.download_model(model=model):
                 if progress.completed:
                     new_progress = progress.completed
                     bar.length = progress.total
@@ -114,7 +114,7 @@ def install_model(model: str):
     except Exception as e:
         click.echo(f'❌ {e}')
 
-    click.echo(f'✅ {model} was successfully installed!')
+    click.echo(f'✅ {model} was successfully downloaded!')
 
 
 @click.command()
@@ -140,8 +140,8 @@ def remove_model(model: str):
 def list_models():
     """List all downloaded models."""
     try:
-        installed_models = OllamaManager().get_installed_models().models
-        for model in installed_models:
+        downloaded_models = OllamaManager().get_downloaded_models().models
+        for model in downloaded_models:
             click.echo(model.model)
     except Exception as e:
         click.echo(f'❌ {e}')
@@ -187,7 +187,7 @@ cli.add_command(list_chats)
 cli.add_command(list_chat_history)
 cli.add_command(chat)
 
-cli.add_command(install_model)
+cli.add_command(download_model)
 cli.add_command(list_models)
 cli.add_command(remove_model)
 cli.add_command(show_model)

@@ -13,7 +13,7 @@ class OllamaManager:
         pass
 
     @staticmethod
-    def get_installed_models() -> ollama.ListResponse:
+    def get_downloaded_models() -> ollama.ListResponse:
         return ollama.list()
 
     @staticmethod
@@ -21,7 +21,7 @@ class OllamaManager:
         return ollama.show(model=model)
 
     @staticmethod
-    def install_model(model: Optional[str] = None) -> Generator:
+    def download_model(model: Optional[str] = None) -> Generator:
         for x in ollama.pull(model=model, stream=True):
             yield x
 
