@@ -6,7 +6,7 @@
 [![Python 3.12](https://img.shields.io/badge/python-3.12-gree.svg)](https://www.python.org/downloads/release/python-3120/)
 [![Python 3.13](https://img.shields.io/badge/python-3.13-gree.svg)](https://www.python.org/downloads/release/python-3130/)
 
-A terminal project exploring the possibilities of managing and running LLMs locally on your machine. Built on  [Ollama](https://ollama.com/), [SQLAlchemy](https://www.sqlalchemy.org/), [Postgres](https://www.postgresql.org/) and [Textual](https://textual.textualize.io/) using python.
+A terminal project exploring the possibilities of managing and running LLMs locally on your machine. Built on  [Ollama](https://ollama.com/), [Docker](https://www.docker.com/), [Postgres](https://www.postgresql.org/), [SQLAlchemy](https://www.sqlalchemy.org/) and [Textual](https://textual.textualize.io/).
 
 <p align="center">
   <img src="https://s3.ezgif.com/tmp/ezgif-3b64aa4ed8e185.gif" alt="Alt Text", width="700">

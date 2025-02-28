@@ -113,6 +113,7 @@ def download_model(model: str):
                 current_progress = new_progress
     except Exception as e:
         click.echo(f'❌ {e}')
+        return
 
     click.echo(f'✅ {model} was successfully downloaded!')
 
@@ -134,6 +135,7 @@ def remove_model(model: str):
             click.echo(f'❌ {model} was not successfully removed!')
     except Exception as e:
         click.echo(f'❌ {e}')
+        return
 
 
 @click.command()
