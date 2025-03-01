@@ -56,9 +56,8 @@ class OllamaManager:
         ai_response = ChatMessage(chat_id=chat.id, role=ChatRole.ASSISTANT, model=chat.default_model, content='')
         for chunked_response in ollama.chat(messages=message_history, stream=True, model=chat.default_model):
             ai_response.content += chunked_response.message.content
+            ai_response.save()
             yield chunked_response.message.content
-
-        ai_response.save()
 
     @staticmethod
     def generate_chat_name(chat: Chat) -> str:

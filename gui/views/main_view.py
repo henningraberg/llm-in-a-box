@@ -20,7 +20,7 @@ class MainView(Screen):
                 with Horizontal(id='chat-view-header'):
                     yield LLMSelect(id='llm-selection-2', disabled=disabled)
                     yield Button(label='Delete chat', id='init-delete-chat-button', disabled=disabled, variant='error')
-                yield VerticalScroll(id='chat-history-box', disabled=disabled)
+                yield VerticalScroll(id='chat-history-container', disabled=disabled)
                 with Horizontal(id='input-box'):
                     yield InputTextArea(id='message-input', disabled=disabled, show_line_numbers=True)
                     with Vertical(id='input-buttons-box'):
