@@ -2,14 +2,23 @@ install:
 	python -m venv venv
 	. venv/bin/activate
 	pip install -r requirements.txt
-	docker-compose up -d
+	$(MAKE) run-services
 	python liab.py build-db
 
 rebuild-db:
 	python liab.py nuke-db
 	python liab.py build-db
 
-clean:
+run-services:
+	docker-compose up -d
+
+clean-services:
 	docker-compose down -v
+
+clean-venv:
+	source deactivate
 	rm -rf venv
-	deactivate
+
+clean:
+	$(MAKE) clean-services
+	$(MAKE) clean-venv
