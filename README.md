@@ -9,7 +9,7 @@
 A fully functional Large Language Model (LLM) chat application for the terminal. Run and manage LLMs locally on your machine with ease. Built with [Ollama](https://ollama.com/) for model hosting, [Docker](https://www.docker.com/) for containerization, [Postgres](https://www.postgresql.org/) for data storage, [SQLAlchemy](https://www.sqlalchemy.org/) for database management, and [Textual](https://textual.textualize.io/) for a rich terminal UI.
 
 <p align="center">
-  <img src="https://s4.ezgif.com/tmp/ezgif-458da3d881d86f.gif" alt="Alt Text", width="800">
+  <img src="https://i.imgur.com/lr3cFX3.gif" alt="Alt Text" width="800">
 </p>
 
 
@@ -24,7 +24,7 @@ git clone https://github.com/henningraberg/llm-in-a-box.git
 cd llm-in-a-box
 ```
 
-3. Set up docker containers, python environment and packages
+3. Set up docker containers, python environment and packages (make sure you have Docker running)
 ```bash
 make install
 ```
