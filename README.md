@@ -29,12 +29,17 @@ cd llm-in-a-box
 make install
 ```
 
-4. Download the models you want to use (brows available models here &#8594; https://ollama.com/library)
+4. Activate the python environment
+```bash
+source venv/bin/activate
+```
+
+5. Download the models you want to use (brows available models here &#8594; https://ollama.com/library)
 ```bash
 python liab.py download-model <model_name>
 ```
 
-5. Run GUI application
+6. Run GUI application
 ```bash
 python liab.py gui
 ```

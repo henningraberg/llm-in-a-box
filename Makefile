@@ -1,7 +1,6 @@
 install:
 	python -m venv venv
-	. venv/bin/activate
-	pip install -r requirements.txt
+	bash -c "source venv/bin/activate && pip install -r requirements.txt"
 	$(MAKE) run-services
 	python liab.py build-db
 
