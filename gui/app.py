@@ -210,8 +210,8 @@ class TextualApp(App):
 
         history_container = self.query_one('#chat-history-container', VerticalScroll)
 
-        for child in history_container.children:
-            child.remove()
+        if history_container.children:
+            history_container.remove_children()
 
         chat = Chat.get_one(id=self.current_chat_id)
 
@@ -222,8 +222,7 @@ class TextualApp(App):
 
         chat_history = chat.get_chat_history()
 
-        for message in chat_history:
-            history_container.mount(ChatMessageArea(message))
+        history_container.mount(*[ChatMessageArea(message) for message in chat_history])
 
         self.scroll_history_container_to_end(history_container)
 
@@ -263,8 +262,8 @@ class TextualApp(App):
 
             if previous_chat_id:
                 history_container = self.query_one('#chat-history-container', VerticalScroll)
-                for child in history_container.children:
-                    child.remove()
+                if history_container.children:
+                    history_container.remove_children()
 
             return
 
@@ -275,4 +274,4 @@ class TextualApp(App):
     @staticmethod
     def scroll_history_container_to_end(container: VerticalScroll) -> None:
         if container.allow_vertical_scroll and container.children:
-            container.action_scroll_end()
+            container.scroll_end(animate=False)
