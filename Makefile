@@ -9,10 +9,10 @@ rebuild-db:
 	python liab.py build-db
 
 run-services:
-	docker-compose up -d
+	docker compose up -d
 
 clean-services:
-	docker-compose down -v
+	docker compose down -v
 
 clean-venv:
 	source deactivate
