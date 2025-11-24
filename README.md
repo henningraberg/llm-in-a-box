@@ -1,10 +1,5 @@
 # LLM in a box (LIAB)
-[![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff) 
-[![Python 3.9](https://img.shields.io/badge/python-3.9-gree.svg)](https://www.python.org/downloads/release/python-390/)
-[![Python 3.10](https://img.shields.io/badge/python-3.10-gree.svg)](https://www.python.org/downloads/release/python-3100/)
-[![Python 3.11](https://img.shields.io/badge/python-3.11-gree.svg)](https://www.python.org/downloads/release/python-3110/)
-[![Python 3.12](https://img.shields.io/badge/python-3.12-gree.svg)](https://www.python.org/downloads/release/python-3120/)
-[![Python 3.13](https://img.shields.io/badge/python-3.13-gree.svg)](https://www.python.org/downloads/release/python-3130/)
+[![Python 3.9](https://img.shields.io/badge/python-3.10+-gree.svg)](https://www.python.org/downloads/release/python-390/)
 
 A fully functional Large Language Model (LLM) chat application for the terminal. Run and manage LLMs locally on your machine with ease. Built with [Ollama](https://ollama.com/) for model hosting, [Docker](https://www.docker.com/) for containerization, [Postgres](https://www.postgresql.org/) for data storage, [SQLAlchemy](https://www.sqlalchemy.org/) for database management, and [Textual](https://textual.textualize.io/) for a rich terminal UI.
 
