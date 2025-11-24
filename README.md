@@ -20,7 +20,7 @@ cd llm-in-a-box
 ```
 
 3. Make sure you have the following installed before running the install
-* [Docker](https://docs.docker.com/get-started/)
+* [Docker](https://docs.docker.com/get-started/) (make sure you allocated high memory limit, some models requires a lot when processing)
 * [Postgresql](https://www.postgresql.org/download/)
 
 4. Set up docker containers, python environment and packages (⚠️ make sure you have Docker running before install)
