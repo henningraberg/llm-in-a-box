@@ -1,7 +1,7 @@
 # LLM in a box (LIAB)
 [![Python 3.9](https://img.shields.io/badge/python-3.10+-gree.svg)](https://www.python.org/downloads/release/python-390/)
 
-A fully functional Large Language Model (LLM) chat application for the terminal. Run and manage LLMs locally on your machine with ease. Built with [Ollama](https://ollama.com/) for model hosting, [Docker](https://www.docker.com/) for containerization, [Postgres](https://www.postgresql.org/) for data storage, [SQLAlchemy](https://www.sqlalchemy.org/) for database management, and [Textual](https://textual.textualize.io/) for a rich terminal UI.
+A fully functional terminal-based Large Language Model (LLM) chat application built in Python. Run and manage LLMs locally on your machine with ease. Built with [Ollama](https://ollama.com/) for model hosting, [Docker](https://www.docker.com/) for containerization, [Postgres](https://www.postgresql.org/) for data storage, [SQLAlchemy](https://www.sqlalchemy.org/) as its primary ORM, and [Textual](https://textual.textualize.io/) for a rich terminal UI.
 
 <p align="center">
   <img src="https://i.imgur.com/lr3cFX3.gif" alt="Alt Text" width="800">
@@ -19,24 +19,32 @@ git clone https://github.com/henningraberg/llm-in-a-box.git
 cd llm-in-a-box
 ```
 
-3. Set up docker containers, python environment and packages (make sure you have Docker running)
+3. Make sure you have the following installed before running the install
+* [Docker](https://docs.docker.com/get-started/)
+* [Postgresql](https://www.postgresql.org/download/)
+
+4. Set up docker containers, python environment and packages (⚠️ make sure you have Docker running before install)
 ```bash
 make install
 ```
 
-4. Activate the python environment
+5. Activate the python environment
 ```bash
 source venv/bin/activate
 ```
 
-5. Download the models you want to use (brows available models here &#8594; https://ollama.com/library)
+6. Download the models you want to use (browse available models here &#8594; https://ollama.com/library)
 ```bash
-python liab.py download-model <model_name>
+python3 liab.py download-model --model <model_name>
+```
+Example
+```bash
+python3 liab.py download-model --model gemma3:1b
 ```
 
-6. Run GUI application
+7. Run GUI application
 ```bash
-python liab.py gui
+python3 liab.py gui
 ```
 
 ## Usage

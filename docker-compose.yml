@@ -11,7 +11,7 @@ services:
     restart: always
 
   postgres:
-    image: "postgres:latest"
+    image: "postgres:17.7"
     container_name: "liab_postgres"
     restart: always
     environment:

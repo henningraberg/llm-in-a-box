@@ -1,12 +1,13 @@
 install:
-	python -m venv venv
-	bash -c "source venv/bin/activate && pip install -r requirements.txt"
-	$(MAKE) run-services
-	python liab.py build-db
+	python3 -m venv venv
+	. venv/bin/activate; \
+	pip install -r requirements.txt; \
+	$(MAKE) run-services; \
+	python3 liab.py build-db
 
 rebuild-db:
-	python liab.py nuke-db
-	python liab.py build-db
+	python3 liab.py nuke-db
+	python3 liab.py build-db
 
 run-services:
 	docker compose up -d
