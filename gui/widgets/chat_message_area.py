@@ -1,23 +1,15 @@
-from typing import Optional
+from __future__ import annotations
 
 from textual.app import ComposeResult
+from textual.containers import Vertical
 
 from gui.widgets.chat_message_tag import ChatMessageTagContainer
 from gui.widgets.text_area import ChatMessageTextArea
 from models.chat_message import ChatMessage
-from textual.containers import Vertical
 
 
 class ChatMessageArea(Vertical):
-    DEFAULT_CSS = """
-        ChatMessageArea{
-            margin-top: 1;
-            margin-right: 1;
-            margin-left: 1;
-            height: auto;
-        }
-    """
-    text_area: Optional[ChatMessageTextArea] = None
+    text_area: ChatMessageTextArea | None = None
 
     def __init__(self, chat_message: ChatMessage, **kwargs):
         super().__init__(**kwargs)

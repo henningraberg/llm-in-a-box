@@ -4,38 +4,13 @@ from textual.widgets import Button, Label
 from textual.containers import Horizontal, Container
 
 
-class DeleteChatScreen(ModalScreen):
-    DEFAULT_CSS = """
-        DeleteChatScreen {
-        align: center middle;
-    }
-
-    DeleteChatScreen > Container {
-        width: auto;
-        height: auto;
-        border: thick $background 80%;
-        background: $surface;
-    }
-
-    DeleteChatScreen > Container > Label {
-        width: 100%;
-        content-align-horizontal: center;
-        margin-top: 1;
-    }
-
-    DeleteChatScreen > Container > Horizontal {
-        width: auto;
-        height: auto;
-    }
-
-    DeleteChatScreen > Container > Horizontal > Button {
-        margin: 2 2;
-    }
-    """
-
+class DeleteChatScreen(ModalScreen[bool]):
     def compose(self) -> ComposeResult:
         with Container():
             yield Label('Are you sure?')
             with Horizontal():
-                yield Button('Yes', id='delete-chat-button', variant='success')
-                yield Button('No', id='abort-chat-deletion-button', variant='error')
+                yield Button('Yes', id='confirm-button', variant='success')
+                yield Button('No', id='cancel-button', variant='error')
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        self.dismiss(event.button.id == 'confirm-button')

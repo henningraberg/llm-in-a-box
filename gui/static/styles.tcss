@@ -1,10 +1,12 @@
-#chat-container{
+/* ===== Layout ===== */
+
+#chat-container {
     width: 100%;
     height: 100%;
     border: ascii green;
 }
 
-#chat-list-container{
+#chat-list-container {
     width: 30%;
     dock: left;
     background: #161312 100%;
@@ -14,11 +16,11 @@
     margin-right: 1;
 }
 
-#init-new-chat-button{
+#init-new-chat-button {
     width: 100%;
 }
 
-#chat-list{
+#chat-list {
     scrollbar-background: #161312;
     scrollbar-color: #242424;
     scrollbar-background-hover: #161312;
@@ -38,7 +40,7 @@
     margin-left: 1;
 }
 
-#chat-history-container{
+#chat-history-container {
     height: 90%;
     overflow-y: scroll;
     border: heavy black;
@@ -56,6 +58,131 @@
     margin-bottom: 1;
     margin-right: 1;
 }
-#input-buttons-box{
+
+#input-buttons-box {
     align-vertical: middle;
+}
+
+/* ===== Widgets ===== */
+
+ChatListItemButton {
+    background: #161312 100%;
+    height: 3;
+    color: white;
+    border: round green;
+    text-align: center;
+    width: 100%;
+
+    &:hover {
+        border: ascii;
+        background: #161312 100%;
+    }
+
+    &:focus {
+        border: ascii green;
+        background: #161312 100%;
+        text-style: bold;
+        background-tint: $foreground 0%;
+    }
+
+    &.selected {
+        border: ascii green;
+    }
+}
+
+ChatMessageArea {
+    margin-top: 1;
+    margin-right: 1;
+    margin-left: 1;
+    height: auto;
+}
+
+ChatMessageTagContainer {
+    height: auto;
+
+    &.user-message {
+        align-horizontal: right;
+    }
+}
+
+UserChatMessageTag {
+    color: black;
+    background: green 100%;
+    text-style: bold;
+}
+
+AiChatMessageTag {
+    color: black;
+    background: green 100%;
+    text-style: bold;
+}
+
+ChatMessageTextArea {
+    height: auto;
+    border: ascii green;
+    width: 100%;
+}
+
+/* ===== Screens ===== */
+
+DeleteChatScreen {
+    align: center middle;
+}
+
+DeleteChatScreen > Container {
+    width: auto;
+    height: auto;
+    border: thick $background 80%;
+    background: $surface;
+}
+
+DeleteChatScreen > Container > Label {
+    width: 100%;
+    content-align-horizontal: center;
+    margin-top: 1;
+}
+
+DeleteChatScreen > Container > Horizontal {
+    width: auto;
+    height: auto;
+}
+
+DeleteChatScreen > Container > Horizontal > Button {
+    margin: 2 2;
+}
+
+NewChatScreen {
+    align: center middle;
+}
+
+NewChatScreen > Container {
+    width: auto;
+    height: auto;
+    border: thick $background 80%;
+    background: $surface;
+}
+
+NewChatScreen > Container > Label {
+    width: 100%;
+    content-align-horizontal: center;
+    margin-top: 1;
+}
+
+NewChatScreen > Container > Vertical {
+    width: auto;
+    height: auto;
+}
+
+NewChatScreen > Container > Vertical > Horizontal {
+    width: auto;
+    height: auto;
+}
+
+NewChatScreen > Container > Vertical > LLMSelect {
+    width: 100%;
+    margin-top: 2;
+}
+
+NewChatScreen > Container > Vertical > Horizontal > Button {
+    margin: 2 2;
 }

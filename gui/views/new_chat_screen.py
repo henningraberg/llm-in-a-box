@@ -1,55 +1,26 @@
 from textual.app import ComposeResult
 from textual.screen import ModalScreen
-from textual.widgets import Button, Label
+from textual.widgets import Button, Label, Select
 from textual.containers import Horizontal, Vertical, Container
 
 from gui.widgets.llm_select import LLMSelect
 
 
-class NewChatScreen(ModalScreen):
-    DEFAULT_CSS = """
-        NewChatScreen {
-        align: center middle;
-    }
-
-    NewChatScreen > Container {
-        width: auto;
-        height: auto;
-        border: thick $background 80%;
-        background: $surface;
-    }
-
-    NewChatScreen > Container > Label {
-        width: 100%;
-        content-align-horizontal: center;
-        margin-top: 1;
-    }
-    
-    NewChatScreen > Container > Vertical {
-        width: auto;
-        height: auto;
-    }
-    
-    NewChatScreen > Container > Vertical > Horizontal {
-        width: auto;
-        height: auto;
-    }
-    
-    NewChatScreen > Container > Vertical > LLMSelect {
-        width: 100%;
-        margin-top: 2; 
-    }
-    
-    NewChatScreen > Container > Vertical > Horizontal > Button {
-        margin: 2 2;
-    }
-    """
-
+class NewChatScreen(ModalScreen[str | None]):
     def compose(self) -> ComposeResult:
         with Container():
             yield Label('Pick a model for your new chat')
             with Vertical():
-                yield LLMSelect(id='llm-selection-1')
+                yield LLMSelect(id='llm-selection')
                 with Horizontal():
-                    yield Button('Abort', id='abort-chat-creation-button', variant='error')
-                    yield Button('Create', id='create-new-chat-button', variant='success', disabled=True)
+                    yield Button('Abort', id='abort-button', variant='error')
+                    yield Button('Create', id='create-button', variant='success', disabled=True)
+
+    def on_select_changed(self, event: Select.Changed) -> None:
+        self.query_one('#create-button', Button).disabled = event.value == Select.BLANK
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == 'create-button':
+            self.dismiss(self.query_one('#llm-selection', LLMSelect).value)
+        else:
+            self.dismiss(None)
