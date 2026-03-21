@@ -77,3 +77,13 @@ Commands:
   remove-model       Remove model.
   show-model         Get model information.
 ```
+
+## SQL Query Logging
+You can optionally enable SQL query logging to see what queries SQLAlchemy executes. Set the `SQL_LOG` environment variable to enable it:
+```bash
+SQL_LOG=1 poetry run liab gui
+```
+Queries are written to `logs/sql.log`. To follow the log in real time, run in a separate terminal:
+```bash
+tail -f logs/sql.log
+```

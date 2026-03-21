@@ -9,7 +9,7 @@ class Chat(BaseModel):
     name: Mapped[str] = mapped_column(String(), nullable=False)
     default_model: Mapped[Optional[str]] = mapped_column(default=None)
 
-    messages = relationship('ChatMessage', back_populates='chat', cascade='all, delete-orphan', order_by='ChatMessage.created_at')
+    messages = relationship('ChatMessage', back_populates='chat', cascade='all, delete-orphan', order_by='ChatMessage.created_at', lazy='joined')
 
     def __init__(self, name: str, default_model: Optional[str] = None) -> None:
         super().__init__()

@@ -17,7 +17,7 @@ packages = [
 python = "^3.11"
 ruff = "0.9.6"
 textual = "2.0.4"
-SQLAlchemy = "^2.0.38"
+SQLAlchemy = "^2.0.48"
 psycopg2 = "2.9.10"
 ollama = "0.4.7"
 click = "8.1.8"
@@ -39,6 +39,9 @@ source = ["cli", "database", "enums", "gui", "integrations", "models"]
 
 [tool.coverage.report]
 omit = ["tests/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
