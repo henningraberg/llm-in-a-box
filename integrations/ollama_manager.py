@@ -31,7 +31,7 @@ class OllamaManager:
 
     @staticmethod
     def chat(chat_id: int, content: str, model: Optional[str] = None) -> Generator:
-        chat = Chat.get_one(id=chat_id)
+        chat = Chat.one(id=chat_id)
 
         if model:
             chat.default_model = model

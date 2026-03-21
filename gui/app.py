@@ -61,7 +61,7 @@ class TextualApp(App):
 
         self.abort_llm_response_if_needed()
 
-        chat = Chat.get_one(id=self.current_chat_id)
+        chat = Chat.one(id=self.current_chat_id)
 
         button_widget = self.query_one(chat.get_gui_id_with_hash_tag(), ChatListItemButton)
         button_widget.remove()
@@ -123,7 +123,7 @@ class TextualApp(App):
     @on(LLMSelect.Changed, '#llm-selection-2')
     def select_model_for_existing_chat(self, event: LLMSelect.Changed) -> None:
         if event.value != Select.BLANK:
-            chat = Chat.get_one(id=self.current_chat_id)
+            chat = Chat.one(id=self.current_chat_id)
             chat.default_model = event.value
             chat.save()
 
@@ -150,7 +150,7 @@ class TextualApp(App):
 
     def send_message(self, content: str) -> None:
         """Send a message to Ollama and handles the response."""
-        chat = Chat.get_one(id=self.current_chat_id)
+        chat = Chat.one(id=self.current_chat_id)
 
         chat_message = ChatMessage(chat_id=chat.id, content=content, role=ChatRole.USER).save()
 
@@ -213,16 +213,14 @@ class TextualApp(App):
         if history_container.children:
             history_container.remove_children()
 
-        chat = Chat.get_one(id=self.current_chat_id)
+        chat = Chat.one(id=self.current_chat_id)
 
         llm_selector = self.query_one('#llm-selection-2', LLMSelect)
         llm_selector.value = chat.default_model
 
         self.set_current_chat(chat_id=chat.id)
 
-        chat_history = chat.get_chat_history()
-
-        history_container.mount(*[ChatMessageArea(message) for message in chat_history])
+        history_container.mount(*[ChatMessageArea(message) for message in chat.messages])
 
         self.scroll_history_container_to_end(history_container)
 

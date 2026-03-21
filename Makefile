@@ -1,4 +1,4 @@
-.PHONY: install rebuild-db run-services stop-services clean-services clean test lint
+.PHONY: install rebuild-db run-services stop-services clean-services clean test lint coverage
 
 install:
 	poetry install
@@ -27,3 +27,6 @@ test:
 lint:
 	poetry run ruff check .
 	poetry run ruff format --check .
+
+coverage:
+	poetry run pytest tests/ --cov --cov-report=term-missing

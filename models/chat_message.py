@@ -1,7 +1,7 @@
 from typing import Optional
 
-from sqlalchemy import Column, String, Integer, ForeignKey, Enum
-from sqlalchemy.orm import relationship
+from sqlalchemy import String, ForeignKey, Enum
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from enums.enums import ChatRole
 
 from .base import BaseModel
@@ -10,11 +10,11 @@ from .base import BaseModel
 class ChatMessage(BaseModel):
     __tablename__ = 'chat_message'
 
-    chat_id = Column(Integer, ForeignKey('chat.id', ondelete='CASCADE'), nullable=False)
+    chat_id: Mapped[int] = mapped_column(ForeignKey('chat.id', ondelete='CASCADE'), nullable=False)
 
-    content = Column(String(), nullable=False)
-    model = Column(String(), nullable=True)
-    role = Column(Enum(ChatRole), nullable=False)
+    content: Mapped[str] = mapped_column(String(), nullable=False)
+    model: Mapped[Optional[str]] = mapped_column(String(), nullable=True)
+    role: Mapped[ChatRole] = mapped_column(Enum(ChatRole), nullable=False)
 
     chat = relationship('Chat', back_populates='messages')
 

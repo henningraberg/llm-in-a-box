@@ -36,7 +36,7 @@ def add_chat(default_model: str, name: Optional[str] = None):
 def remove_chat(chat_id: int) -> None:
     """Remove a chat."""
     try:
-        Chat.get_one(id=chat_id).delete()
+        Chat.one(id=chat_id).delete()
         click.echo(f'✅ Chat {chat_id} was successfully removed!')
     except Exception as e:
         click.echo(f'❌ {e}')
@@ -58,8 +58,8 @@ def list_chats():
 def list_chat_history(chat_id: int):
     """List a chats message history."""
     try:
-        chat = Chat.get_one(id=chat_id)
-        message_history = chat.get_chat_history()
+        chat = Chat.one(id=chat_id)
+        message_history = chat.messages
 
         for message in message_history:
             actor = message.model if message.model else 'You'
@@ -82,7 +82,7 @@ def chat(ctx, chat_id: int, content: str, model: Optional[str] = None):
 
         ctx.invoke(list_chat_history, chat_id=chat_id)
 
-        chat = Chat.get_one(id=chat_id)
+        chat = Chat.one(id=chat_id)
 
         click.echo('You\n---')
         click.echo(content + '\n\n')

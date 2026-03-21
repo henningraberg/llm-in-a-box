@@ -54,6 +54,7 @@ poetry run liab gui
 | `make rebuild-db` | Nuke and rebuild the database |
 | `make test` | Run tests |
 | `make lint` | Run linting and format checks |
+| `make coverage` | Run tests with coverage report |
 
 ## Usage
 ```
