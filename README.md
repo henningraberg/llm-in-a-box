@@ -53,6 +53,7 @@ poetry run liab gui
 | `make clean` | Alias for `clean-services` |
 | `make rebuild-db` | Nuke and rebuild the database |
 | `make test` | Run tests |
+| `make lint` | Run linting and format checks |
 
 ## Usage
 ```

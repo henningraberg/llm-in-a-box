@@ -1,4 +1,4 @@
-.PHONY: install rebuild-db run-services stop-services clean-services clean test
+.PHONY: install rebuild-db run-services stop-services clean-services clean test lint
 
 install:
 	poetry install
@@ -23,3 +23,7 @@ clean:
 
 test:
 	poetry run pytest tests/ -v
+
+lint:
+	poetry run ruff check .
+	poetry run ruff format --check .
