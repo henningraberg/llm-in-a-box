@@ -1,25 +1,25 @@
-.PHONY: install rebuild-db run-services clean-services clean-venv clean
+.PHONY: install rebuild-db run-services stop-services clean-services clean test
 
 install:
-	python3 -m venv venv
-	. venv/bin/activate && \
-		pip install -r requirements.txt && \
-		$(MAKE) run-services && \
-		python3 liab.py build-db
+	poetry install
+	$(MAKE) run-services
+	poetry run liab build-db
 
 rebuild-db:
-	python3 liab.py nuke-db
-	python3 liab.py build-db
+	poetry run liab nuke-db
+	poetry run liab build-db
 
 run-services:
 	docker compose up -d
 
+stop-services:
+	docker compose down
+
 clean-services:
 	docker compose down -v
 
-clean-venv:
-	rm -rf venv
-
 clean:
 	$(MAKE) clean-services
-	$(MAKE) clean-venv
+
+test:
+	poetry run pytest tests/ -v

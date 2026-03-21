@@ -1,3 +1,38 @@
+[tool.poetry]
+name = "llm-in-a-box"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+packages = [
+    { include = "cli" },
+    { include = "database" },
+    { include = "enums" },
+    { include = "gui" },
+    { include = "integrations" },
+    { include = "models" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ruff = "0.9.6"
+textual = "2.0.4"
+SQLAlchemy = "2.0.38"
+psycopg2 = "2.9.10"
+ollama = "0.4.7"
+click = "8.1.8"
+pyperclip = "1.9.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+
+[tool.poetry.scripts]
+liab = "cli.cli:cli"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [

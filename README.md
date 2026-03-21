@@ -20,6 +20,7 @@ cd llm-in-a-box
 ```
 
 3. Make sure you have the following installed before running the install
+* [Poetry](https://python-poetry.org/docs/#installation)
 * [Docker](https://docs.docker.com/get-started/) (make sure you allocated high memory limit, some models requires a lot when processing)
 * [Postgresql](https://www.postgresql.org/download/)
 
@@ -28,28 +29,34 @@ cd llm-in-a-box
 make install
 ```
 
-5. Activate the python environment
+5. Download the models you want to use (browse available models here &#8594; https://ollama.com/library)
 ```bash
-source venv/bin/activate
-```
-
-6. Download the models you want to use (browse available models here &#8594; https://ollama.com/library)
-```bash
-python3 liab.py download-model --model <model_name>
+poetry run liab download-model --model <model_name>
 ```
 Example
 ```bash
-python3 liab.py download-model --model gemma3:1b
+poetry run liab download-model --model gemma3:1b
 ```
 
-7. Run GUI application
+6. Run GUI application
 ```bash
-python3 liab.py gui
+poetry run liab gui
 ```
+
+## Makefile Commands
+| Command | Description |
+|---|---|
+| `make install` | Install dependencies, start services, and build the database |
+| `make run-services` | Start Docker containers |
+| `make stop-services` | Stop Docker containers |
+| `make clean-services` | Stop Docker containers and remove volumes |
+| `make clean` | Alias for `clean-services` |
+| `make rebuild-db` | Nuke and rebuild the database |
+| `make test` | Run tests |
 
 ## Usage
 ```
-Usage: liab.py [OPTIONS] COMMAND [ARGS]...
+Usage: liab [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --help  Show this message and exit.
