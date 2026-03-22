@@ -79,9 +79,9 @@ Commands:
 ```
 
 ## SQL Query Logging
-You can optionally enable SQL query logging to see what queries SQLAlchemy executes. Set the `SQL_LOG` environment variable to enable it:
+You can optionally enable SQL query logging to see what queries SQLAlchemy executes. Set the `SQL_DEBUG` environment variable to enable it:
 ```bash
-SQL_LOG=1 poetry run liab gui
+SQL_DEBUG=1 poetry run liab gui
 ```
 Queries are written to `logs/sql.log`. To follow the log in real time, run in a separate terminal:
 ```bash
