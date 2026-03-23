@@ -169,8 +169,11 @@ class TextualApp(App):
         if history_container.children:
             history_container.remove_children()
 
-        chat = Chat.one(id=self.current_chat_id)
-
+        chat = Chat.one_or_none(id=self.current_chat_id)
+        
+        if not chat:
+            return
+        
         llm_selector = self.query_one('#llm-selection-2', LLMSelect)
         llm_selector.value = chat.default_model
 
