@@ -1,14 +1,16 @@
 from typing import Optional
 
 from sqlalchemy import String, ForeignKey, Enum
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship
 from enums.enums import ChatRole
 
 from .base import BaseModel
 
 
 class ChatMessage(BaseModel):
-    __tablename__ = 'chat_message'
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        return 'chat_message'
 
     chat_id: Mapped[int] = mapped_column(ForeignKey('chat.id', ondelete='CASCADE'), nullable=False)
 
