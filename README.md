@@ -1,7 +1,6 @@
 # LLM in a Box (LIAB)
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A terminal-based chat application for running Large Language Models locally. Manage conversations, switch between models, and stream responses — all from your terminal.
 
