@@ -4,7 +4,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = 'postgresql://root:password@localhost/dev_db'
+DATABASE_URL = 'postgresql://root:password@localhost/liab_db'
 
 if os.environ.get('SQL_DEBUG'):
     os.makedirs('logs', exist_ok=True)
