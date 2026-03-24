@@ -140,7 +140,7 @@ def remove_model(model: str):
     try:
         manager = OllamaManager()
         response = manager.delete_model(model)
-        if response.status == 200:
+        if response.status == 'success':
             click.echo(f'✅ {model} was successfully removed!')
         else:
             click.echo(f'❌ {model} was not successfully removed!')
