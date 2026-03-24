@@ -21,7 +21,7 @@ class OllamaManager:
         return ollama.show(model=model)
 
     @staticmethod
-    def download_model(model: Optional[str] = None) -> Generator:
+    def download_model(model: str) -> Generator:
         for x in ollama.pull(model=model, stream=True):
             yield x
 
