@@ -15,7 +15,7 @@ from gui.views.new_chat_screen import NewChatScreen
 from gui.widgets.chat_list_item_button import ChatListItemButton
 from gui.widgets.chat_message_area import ChatMessageArea
 from gui.widgets.llm_select import LLMSelect
-from gui.widgets.text_area import ChatMessageTextArea
+from gui.widgets.text_area import ChatMessageTextArea, InputTextArea
 from integrations.ollama_manager import OllamaManager
 from models.chat import Chat
 from models.chat_message import ChatMessage
@@ -58,8 +58,8 @@ class TextualApp(App):
     def init_delete_chat(self) -> None:
         self.push_screen(DeleteChatScreen(), callback=self.on_delete_chat_dismissed)
 
-    def on_delete_chat_dismissed(self, confirmed: bool) -> None:
-        if not confirmed:
+    def on_delete_chat_dismissed(self, confirmed: bool | None) -> None:
+        if not confirmed or self.current_chat_id is None:
             return
         self.abort_llm_response_if_needed()
         chat = Chat.one(id=self.current_chat_id)
@@ -87,22 +87,23 @@ class TextualApp(App):
     def on_model_changed(self, event: LLMSelect.Changed) -> None:
         if event.value != Select.BLANK:
             chat = Chat.one(id=self.current_chat_id)
-            chat.default_model = event.value
+            chat.default_model = str(event.value)
             chat.save()
 
     @on(Button.Pressed, '#send-button')
     def init_send_message(self) -> None:
-        text_input = self.query_one('#message-input')
+        text_input = self.query_one('#message-input', InputTextArea)
         content = text_input.text
         if content:
             self.send_message(content=content)
             text_input.text = ''
-            self.query_one('#abort-button').disabled = False
+            self.query_one('#abort-button', Button).disabled = False
 
     @on(Button.Pressed, '#abort-button')
     def abort_message(self) -> None:
         self.abort_llm_response_if_needed()
-        self.load_chat(chat_id=self.current_chat_id)
+        if self.current_chat_id is not None:
+            self.load_chat(chat_id=self.current_chat_id)
 
     # --- Business logic ---
 
@@ -110,8 +111,8 @@ class TextualApp(App):
         if self.response_worker and self.response_worker.is_running:
             session.rollback()
             self.response_worker.cancel()
-            self.query_one('#abort-button').disabled = True
-            self.query_one('#send-button').disabled = False
+            self.query_one('#abort-button', Button).disabled = True
+            self.query_one('#send-button', Button).disabled = False
 
     def send_message(self, content: str) -> None:
         """Send a message to Ollama and handle the response."""
@@ -132,8 +133,8 @@ class TextualApp(App):
     @work(thread=True)
     async def generate_response(self, chat: Chat, ai_response_text_area: ChatMessageTextArea) -> None:
         """Generate the AI response asynchronously and update widget dynamically."""
-        send_button = self.query_one('#send-button')
-        abort_button = self.query_one('#abort-button')
+        send_button = self.query_one('#send-button', Button)
+        abort_button = self.query_one('#abort-button', Button)
         history_container = self.query_one('#chat-history-container', VerticalScroll)
         send_button.disabled = True
 
@@ -183,15 +184,15 @@ class TextualApp(App):
 
     def toggle_chat_view(self, disabled: bool) -> None:
         """Toggle the disabled state of the chat view widgets."""
-        self.query_one('#llm-selection-2').disabled = disabled
+        self.query_one('#llm-selection-2', LLMSelect).disabled = disabled
         self.query_one('#chat-history-container', VerticalScroll).disabled = disabled
 
-        message_input = self.query_one('#message-input')
+        message_input = self.query_one('#message-input', InputTextArea)
         message_input.disabled = disabled
         message_input.text = ''
 
-        self.query_one('#send-button').disabled = disabled
-        self.query_one('#init-delete-chat-button').disabled = disabled
+        self.query_one('#send-button', Button).disabled = disabled
+        self.query_one('#init-delete-chat-button', Button).disabled = disabled
 
     def set_current_chat(self, chat_id: int | None) -> None:
         """Set the current chat and update sidebar highlighting."""

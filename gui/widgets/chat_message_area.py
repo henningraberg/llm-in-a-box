@@ -9,7 +9,7 @@ from models.chat_message import ChatMessage
 
 
 class ChatMessageArea(Vertical):
-    text_area: ChatMessageTextArea | None = None
+    text_area: ChatMessageTextArea
 
     def __init__(self, chat_message: ChatMessage, **kwargs):
         super().__init__(**kwargs)
