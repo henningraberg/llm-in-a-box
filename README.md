@@ -31,6 +31,21 @@ A terminal-based chat application for running Large Language Models locally. Man
 | Containerization | [Docker](https://www.docker.com/) |
 | Package Manager | [Poetry](https://python-poetry.org/) |
 
+## Project Structure
+
+```
+llm-in-a-box/
+├── cli/              # CLI commands (Click)
+├── gui/              # Terminal UI (Textual)
+│   ├── views/        # Screen layouts
+│   ├── widgets/      # UI components
+│   └── static/       # Stylesheets
+├── models/           # SQLAlchemy ORM models
+├── database/         # DB init & cleanup
+├── integrations/     # Ollama client wrapper
+└── tests/            # Pytest test suite
+```
+
 ## Prerequisites
 
 - [Python 3.11+](https://www.python.org/downloads/)
@@ -112,20 +127,6 @@ Usage: liab [OPTIONS] COMMAND [ARGS]...
 | `make test` | Run the test suite |
 | `make lint` | Run linting and format checks (Ruff) |
 | `make coverage` | Run tests with coverage report |
-
-## Project Structure
-
-```
-cli/             CLI commands (Click)
-gui/             Terminal UI (Textual)
-  views/         Screen layouts
-  widgets/       Reusable UI components
-  static/        Stylesheets
-models/          SQLAlchemy ORM models
-database/        DB initialization and cleanup
-integrations/    Ollama client wrapper
-tests/           Pytest test suite
-```
 
 ## SQL Query Logging
 
