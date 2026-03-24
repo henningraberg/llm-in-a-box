@@ -142,6 +142,18 @@ def remove_model(model: str):
         response = manager.delete_model(model)
         if response.status == 'success':
             click.echo(f'✅ {model} was successfully removed!')
+
+            affected_chats = Chat.get_multiple(default_model=model)
+            if affected_chats:
+                remaining_models = manager.get_downloaded_models().models
+                new_default = remaining_models[0].model if remaining_models else None
+                for c in affected_chats:
+                    c.default_model = new_default
+                    c.save()
+                if new_default:
+                    click.echo(f'ℹ️  {len(affected_chats)} chat(s) reassigned from {model} to {new_default}.')
+                else:
+                    click.echo(f'⚠️  {len(affected_chats)} chat(s) had their default model cleared (no models remaining).')
         else:
             click.echo(f'❌ {model} was not successfully removed!')
     except Exception as e:
